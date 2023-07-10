@@ -1,0 +1,270 @@
+import { Create } from "@refinedev/mui";
+import {
+  Box,
+  Grid,
+  TextField,
+  Typography,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
+import { useForm } from "@refinedev/react-hook-form";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { useEffect, useState } from "react";
+import { RequestCard } from "../../components/request-card";
+import fonts from "../../utility/fonts";
+import dayjs from "../../utility/dayjs";
+
+export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
+  const {
+    saveButtonProps,
+    refineCore: { formLoading },
+    register,
+    getValues,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const title = watch("title");
+  const address = watch("address");
+  const closeDate = watch("close_date");
+  const limit = watch("limit");
+  const acceptanceLabel = watch("acceptance_label");
+  const rejectionLabel = watch("rejection_label");
+  const secondaryColor = watch("secondary_color");
+  const primaryColor = watch("primary_color");
+  const fontFamily = watch("font_family");
+  const backgroundColor = watch("background_color");
+  const italicize = watch("italicize");
+
+  useEffect(() => {
+    setValue("secondary_color", "#F9F4D7");
+    setValue("primary_color", "#846C15");
+    setValue("acceptance_label", "Politely Accepts");
+    setValue("rejection_label", "Respectfully Declines");
+    setValue("font_family", fonts[0]);
+    setValue("close_date", dayjs().format("YYYY-MM-DD"));
+    setValue("background_color", "#EEE6B4");
+    setValue("italicize", false);
+  }, [setValue]);
+
+  return (
+    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+      <Box marginBottom={4}>
+        <Typography component="h2" fontSize={24} fontWeight="bold">
+          Preview
+        </Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgcolor={backgroundColor}
+          padding={8}
+        >
+          <RequestCard
+            backgroundColor={backgroundColor}
+            title={title}
+            address={address}
+            acceptanceLabel={acceptanceLabel}
+            rejectionLabel={rejectionLabel}
+            closeDate={closeDate}
+            secondaryColor={secondaryColor}
+            primaryColor={primaryColor}
+            limit={limit}
+            fontFamily={fontFamily}
+            italicize={italicize}
+          />
+        </Box>
+      </Box>
+      <Grid component="form" autoComplete="off" container spacing={2}>
+        <Grid container item xs={12} md={6} spacing={2} flex={1}>
+          <Grid item xs={12}>
+            <Typography fontSize={24} fontWeight="semibold">
+              General Information
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              {...register("title", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.title}
+              helperText={(errors as any)?.title?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="text"
+              label="Title"
+              name="title"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              {...register("address", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.address}
+              helperText={(errors as any)?.address?.message}
+              fullWidth
+              multiline
+              rows={4}
+              InputLabelProps={{ shrink: true }}
+              type="text"
+              label="Address"
+              name="address"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("acceptance_label", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.acceptance_label}
+              helperText={(errors as any)?.acceptance_label?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="text"
+              label="Acceptance Label"
+              name="acceptance_label"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("rejection_label", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.rejection_label}
+              helperText={(errors as any)?.rejection_label?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="text"
+              label="Rejection Label"
+              name="rejection_label"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("limit", {
+                required: "This field is required",
+                valueAsNumber: true,
+              })}
+              error={!!(errors as any)?.limit}
+              helperText={(errors as any)?.limit?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="number"
+              label="Limit"
+              name="limit"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("close_date", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.close_date}
+              helperText={(errors as any)?.close_date?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="date"
+              label="Close Date"
+              name="close_date"
+            />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          md={6}
+          spacing={2}
+          alignContent="flex-start"
+        >
+          <Grid item xs={12}>
+            <Typography fontSize={24} fontWeight="semibold">
+              Visual
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("secondary_color", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.limit}
+              helperText={(errors as any)?.limit?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="color"
+              label="Secondary Color"
+              name="secondary_color"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("primary_color", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.limit}
+              helperText={(errors as any)?.limit?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="color"
+              label="Primary Color"
+              name="primary_color"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              {...register("background_color", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.limit}
+              helperText={(errors as any)?.limit?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="color"
+              label="Background Color"
+              name="background_color"
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl fullWidth>
+              <InputLabel id="font_family">Font</InputLabel>
+              <Select
+                labelId="font_family"
+                label="Age"
+                {...register("font_family", {
+                  required: "This field is required",
+                })}
+                defaultValue={fonts[0]}
+              >
+                {fonts.map((font) => (
+                  <MenuItem value={font} key={font}>
+                    {font}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4} display="flex" alignItems="center">
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked
+                  {...register("italicize", {
+                    required: "This field is required",
+                  })}
+                />
+              }
+              label="Italicize"
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Create>
+  );
+};

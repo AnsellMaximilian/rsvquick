@@ -1,5 +1,7 @@
 import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import {
   AuthPage,
@@ -35,117 +37,139 @@ import {
   CategoryShow,
 } from "./pages/categories";
 import { supabaseClient } from "./utility";
+import { RequestList } from "./pages/requests/list";
+import { RequestCreate } from "./pages/requests/create";
 
 function App() {
   return (
-    <BrowserRouter>
-      <GitHubBanner />
-      <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
-          <RefineSnackbarProvider>
-            <Refine
-              dataProvider={dataProvider(supabaseClient)}
-              liveProvider={liveProvider(supabaseClient)}
-              authProvider={authProvider}
-              routerProvider={routerBindings}
-              notificationProvider={notificationProvider}
-              resources={[
-                {
-                  name: "blog_posts",
-                  list: "/blog-posts",
-                  create: "/blog-posts/create",
-                  edit: "/blog-posts/edit/:id",
-                  show: "/blog-posts/show/:id",
-                  meta: {
-                    canDelete: true,
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <BrowserRouter>
+        <GitHubBanner />
+        <RefineKbarProvider>
+          <ColorModeContextProvider>
+            <CssBaseline />
+            <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+            <RefineSnackbarProvider>
+              <Refine
+                dataProvider={dataProvider(supabaseClient)}
+                liveProvider={liveProvider(supabaseClient)}
+                authProvider={authProvider}
+                routerProvider={routerBindings}
+                notificationProvider={notificationProvider}
+                resources={[
+                  {
+                    name: "blog_posts",
+                    list: "/blog-posts",
+                    create: "/blog-posts/create",
+                    edit: "/blog-posts/edit/:id",
+                    show: "/blog-posts/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
                   },
-                },
-                {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
-                  meta: {
-                    canDelete: true,
+                  {
+                    name: "categories",
+                    list: "/categories",
+                    create: "/categories/create",
+                    edit: "/categories/edit/:id",
+                    show: "/categories/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
                   },
-                },
-              ]}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-              }}
-            >
-              <Routes>
-                <Route
-                  element={
-                    <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                      <ThemedLayoutV2 Header={() => <Header sticky />}>
-                        <Outlet />
-                      </ThemedLayoutV2>
-                    </Authenticated>
-                  }
-                >
+                  {
+                    name: "requests",
+                    list: "/requests",
+                    create: "/requests/create",
+                    edit: "/requests/edit/:id",
+                    show: "/requests/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                ]}
+                options={{
+                  syncWithLocation: true,
+                  warnWhenUnsavedChanges: true,
+                }}
+              >
+                <Routes>
                   <Route
-                    index
-                    element={<NavigateToResource resource="blog_posts" />}
-                  />
-                  <Route path="/blog-posts">
-                    <Route index element={<BlogPostList />} />
-                    <Route path="create" element={<BlogPostCreate />} />
-                    <Route path="edit/:id" element={<BlogPostEdit />} />
-                    <Route path="show/:id" element={<BlogPostShow />} />
-                  </Route>
-                  <Route path="/categories">
-                    <Route index element={<CategoryList />} />
-                    <Route path="create" element={<CategoryCreate />} />
-                    <Route path="edit/:id" element={<CategoryEdit />} />
-                    <Route path="show/:id" element={<CategoryShow />} />
-                  </Route>
-                  <Route path="*" element={<ErrorComponent />} />
-                </Route>
-                <Route
-                  element={
-                    <Authenticated fallback={<Outlet />}>
-                      <NavigateToResource />
-                    </Authenticated>
-                  }
-                >
-                  <Route
-                    path="/login"
                     element={
-                      <AuthPage
-                        type="login"
-                        formProps={{
-                          defaultValues: {
-                            email: "info@refine.dev",
-                            password: "refine-supabase",
-                          },
-                        }}
-                      />
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ThemedLayoutV2 Header={() => <Header sticky />}>
+                          <Outlet />
+                        </ThemedLayoutV2>
+                      </Authenticated>
                     }
-                  />
+                  >
+                    <Route
+                      index
+                      element={<NavigateToResource resource="blog_posts" />}
+                    />
+                    <Route path="/blog-posts">
+                      <Route index element={<BlogPostList />} />
+                      <Route path="create" element={<BlogPostCreate />} />
+                      <Route path="edit/:id" element={<BlogPostEdit />} />
+                      <Route path="show/:id" element={<BlogPostShow />} />
+                    </Route>
+                    <Route path="/categories">
+                      <Route index element={<CategoryList />} />
+                      <Route path="create" element={<CategoryCreate />} />
+                      <Route path="edit/:id" element={<CategoryEdit />} />
+                      <Route path="show/:id" element={<CategoryShow />} />
+                    </Route>
+                    <Route path="/requests">
+                      <Route index element={<RequestList />} />
+                      <Route path="create" element={<RequestCreate />} />
+                      {/* <Route path="edit/:id" element={<MuiInferencer />} /> */}
+                      {/* <Route path="show/:id" element={<MuiInferencer />} /> */}
+                    </Route>
+                    <Route path="*" element={<ErrorComponent />} />
+                  </Route>
                   <Route
-                    path="/register"
-                    element={<AuthPage type="register" />}
-                  />
-                  <Route
-                    path="/forgot-password"
-                    element={<AuthPage type="forgotPassword" />}
-                  />
-                </Route>
-              </Routes>
+                    element={
+                      <Authenticated fallback={<Outlet />}>
+                        <NavigateToResource />
+                      </Authenticated>
+                    }
+                  >
+                    <Route
+                      path="/login"
+                      element={
+                        <AuthPage
+                          type="login"
+                          formProps={{
+                            defaultValues: {
+                              email: "info@refine.dev",
+                              password: "refine-supabase",
+                            },
+                          }}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/register"
+                      element={<AuthPage type="register" />}
+                    />
+                    <Route
+                      path="/forgot-password"
+                      element={<AuthPage type="forgotPassword" />}
+                    />
+                  </Route>
+                </Routes>
 
-              <RefineKbar />
-              <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
-          </RefineSnackbarProvider>
-        </ColorModeContextProvider>
-      </RefineKbarProvider>
-    </BrowserRouter>
+                <RefineKbar />
+                <UnsavedChangesNotifier />
+                <DocumentTitleHandler />
+              </Refine>
+            </RefineSnackbarProvider>
+          </ColorModeContextProvider>
+        </RefineKbarProvider>
+      </BrowserRouter>
+    </LocalizationProvider>
   );
 }
 
