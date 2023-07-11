@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { RequestCard } from "../../components/request-card";
 import fonts from "../../utility/fonts";
 import dayjs from "../../utility/dayjs";
+import Background from "../../components/request-card/background";
 
 export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -59,13 +60,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
         <Typography component="h2" fontSize={24} fontWeight="bold">
           Preview
         </Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          bgcolor={backgroundColor}
-          padding={8}
-        >
+        <Background backgroundColor={backgroundColor}>
           <RequestCard
             backgroundColor={backgroundColor}
             title={title}
@@ -79,7 +74,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
             fontFamily={fontFamily}
             italicize={italicize}
           />
-        </Box>
+        </Background>
       </Box>
       <Grid component="form" autoComplete="off" container spacing={2}>
         <Grid container item xs={12} md={6} spacing={2} flex={1}>

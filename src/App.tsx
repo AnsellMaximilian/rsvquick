@@ -39,6 +39,7 @@ import {
 import { supabaseClient } from "./utility";
 import { RequestList } from "./pages/requests/list";
 import { RequestCreate } from "./pages/requests/create";
+import { RequestShow } from "./pages/requests/show";
 
 function App() {
   return (
@@ -125,7 +126,7 @@ function App() {
                       <Route index element={<RequestList />} />
                       <Route path="create" element={<RequestCreate />} />
                       {/* <Route path="edit/:id" element={<MuiInferencer />} /> */}
-                      {/* <Route path="show/:id" element={<MuiInferencer />} /> */}
+                      <Route path="show/:id" element={<RequestShow />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
