@@ -40,6 +40,7 @@ import { supabaseClient } from "./utility";
 import { RequestList } from "./pages/requests/list";
 import { RequestCreate } from "./pages/requests/create";
 import { RequestShow } from "./pages/requests/show";
+import { ResponseCreate } from "./pages/responses/create";
 
 function App() {
   return (
@@ -95,6 +96,9 @@ function App() {
                 }}
               >
                 <Routes>
+                  <Route path="/r">
+                    <Route path=":id" element={<ResponseCreate />} />
+                  </Route>
                   <Route
                     element={
                       <Authenticated

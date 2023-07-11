@@ -40,7 +40,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
         <Typography variant="body1" fontWeight="bold">
           Id
         </Typography>
-        <NumberField value={record?.id ?? ""} />
+        <TextField value={record?.id ?? ""} />
         <Typography variant="body1" fontWeight="bold">
           Created At
         </Typography>

@@ -10,6 +10,20 @@ import {
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { IResourceComponentsProps } from "@refinedev/core";
 
+export interface IRequest {
+  background_color: string;
+  title: string;
+  address: string;
+  acceptance_label: string;
+  rejection_label: string;
+  close_date: string;
+  secondary_color: string;
+  primary_color: string;
+  limit: number;
+  font_family: string;
+  italicize: boolean;
+}
+
 export const RequestList: React.FC<IResourceComponentsProps> = () => {
   const { dataGridProps } = useDataGrid();
 
