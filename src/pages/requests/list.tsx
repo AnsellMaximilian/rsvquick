@@ -9,6 +9,9 @@ import {
 } from "@refinedev/mui";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { IResourceComponentsProps } from "@refinedev/core";
+import { Link } from "react-router-dom";
+import RsvpIcon from "@mui/icons-material/Rsvp";
+import { IconButton } from "@mui/material";
 
 export interface IRequest {
   background_color: string;
@@ -94,12 +97,15 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
               <EditButton hideText recordItemId={row.id} />
               <ShowButton hideText recordItemId={row.id} />
               <DeleteButton hideText recordItemId={row.id} />
+              <IconButton component={Link} to={`/r/${row.id}`} color="primary">
+                <RsvpIcon />
+              </IconButton>
             </>
           );
         },
         align: "center",
         headerAlign: "center",
-        minWidth: 80,
+        minWidth: 150,
       },
     ],
     []
