@@ -48,7 +48,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
     setValue("acceptance_label", "Politely Accepts");
     setValue("rejection_label", "Respectfully Declines");
     setValue("font_family", fonts[0]);
-    setValue("close_date", dayjs().format("YYYY-MM-DD"));
+    setValue("close_date", dayjs().add(7, "day").format("YYYY-MM-DD"));
     setValue("background_color", "#EEE6B4");
     setValue("italicize", false);
   }, [setValue]);
@@ -194,8 +194,8 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               {...register("secondary_color", {
                 required: "This field is required",
               })}
-              error={!!(errors as any)?.limit}
-              helperText={(errors as any)?.limit?.message}
+              error={!!(errors as any)?.secondary_color}
+              helperText={(errors as any)?.secondary_color?.message}
               fullWidth
               InputLabelProps={{ shrink: true }}
               type="color"
@@ -208,8 +208,8 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               {...register("primary_color", {
                 required: "This field is required",
               })}
-              error={!!(errors as any)?.limit}
-              helperText={(errors as any)?.limit?.message}
+              error={!!(errors as any)?.primary_color}
+              helperText={(errors as any)?.primary_color?.message}
               fullWidth
               InputLabelProps={{ shrink: true }}
               type="color"
@@ -222,8 +222,8 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               {...register("background_color", {
                 required: "This field is required",
               })}
-              error={!!(errors as any)?.limit}
-              helperText={(errors as any)?.limit?.message}
+              error={!!(errors as any)?.background_color}
+              helperText={(errors as any)?.background_color?.message}
               fullWidth
               InputLabelProps={{ shrink: true }}
               type="color"
@@ -237,6 +237,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               <Select
                 labelId="font_family"
                 label="Age"
+                error={!!(errors as any)?.font_family}
                 {...register("font_family", {
                   required: "This field is required",
                 })}
@@ -254,7 +255,6 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
             <FormControlLabel
               control={
                 <Switch
-                  defaultChecked
                   {...register("italicize", {
                     required: "This field is required",
                   })}
