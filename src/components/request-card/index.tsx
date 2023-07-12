@@ -149,7 +149,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       >
         <Box display="flex" justifyContent="flex-end">
           <Typography color={primaryColor} fontWeight="bold">
-            {confirmedAttendees} / {limit}
+            {confirmedAttendees} / {limit ? limit : 0}
           </Typography>
         </Box>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>

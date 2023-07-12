@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  useDataGrid,
-  EditButton,
-  ShowButton,
-  DeleteButton,
-  List,
-  DateField,
-} from "@refinedev/mui";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { IResourceComponentsProps } from "@refinedev/core";
-import { Link } from "react-router-dom";
-import RsvpIcon from "@mui/icons-material/Rsvp";
-import { IconButton } from "@mui/material";
+import { CreateButton, List } from "@refinedev/mui";
+import { IResourceComponentsProps, useList } from "@refinedev/core";
+import { Box, Typography, Stack } from "@mui/material";
+import RequestListCard from "../../components/request-card/list-card";
 
 export interface IRequest {
   id: string;
@@ -36,92 +27,39 @@ export interface IResponse {
 }
 
 export const RequestList: React.FC<IResourceComponentsProps> = () => {
-  const { dataGridProps } = useDataGrid();
+  const { data } = useList<IRequest>({
+    resource: "requests",
+  });
 
-  const columns = React.useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "id",
-        headerName: "Id",
-        type: "number",
-        minWidth: 50,
-      },
-      {
-        field: "created_at",
-        flex: 1,
-        headerName: "Created At",
-        minWidth: 120,
-        renderCell: function render({ value }) {
-          return <DateField value={value} />;
-        },
-      },
-      {
-        field: "title",
-        flex: 1,
-        headerName: "Title",
-        minWidth: 200,
-      },
-      {
-        field: "address",
-        flex: 1,
-        headerName: "Address",
-        minWidth: 200,
-      },
-      {
-        field: "acceptance_label",
-        flex: 1,
-        headerName: "Acceptance Label",
-        minWidth: 150,
-      },
-      {
-        field: "rejection_label",
-        flex: 1,
-        headerName: "Rejection Label",
-        minWidth: 150,
-      },
-      {
-        field: "limit",
-        flex: 1,
-        headerName: "Limit",
-        type: "number",
-        minWidth: 50,
-      },
-      {
-        field: "close_date",
-        flex: 1,
-        headerName: "Close Date",
-        minWidth: 120,
-        renderCell: function render({ value }) {
-          return <DateField value={value} />;
-        },
-      },
-      {
-        field: "actions",
-        headerName: "Actions",
-        sortable: false,
-        renderCell: function render({ row }) {
-          return (
-            <>
-              <EditButton hideText recordItemId={row.id} />
-              <ShowButton hideText recordItemId={row.id} />
-              <DeleteButton hideText recordItemId={row.id} />
-              <IconButton component={Link} to={`/r/${row.id}`} color="primary">
-                <RsvpIcon />
-              </IconButton>
-            </>
-          );
-        },
-        align: "center",
-        headerAlign: "center",
-        minWidth: 150,
-      },
-    ],
-    []
-  );
+  const requests = data?.data;
 
   return (
     <List>
-      <DataGrid {...dataGridProps} columns={columns} autoHeight />
+      {requests && requests.length > 0 ? (
+        <Box display="flex" flexWrap="wrap" gap={2}>
+          {requests.map((req) => (
+            <RequestListCard key={req.id} request={req} />
+          ))}
+        </Box>
+      ) : (
+        <Box
+          padding={2}
+          bgcolor="#f2f2f2"
+          borderRadius={2}
+          minHeight={200}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Stack gap={4} alignItems="center">
+            <Typography>
+              No RSVP requests. You can start creating one by pushing the
+              "Create" button.
+            </Typography>
+            <CreateButton />
+          </Stack>
+        </Box>
+      )}
     </List>
   );
 };
