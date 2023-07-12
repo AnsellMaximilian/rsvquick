@@ -3,15 +3,17 @@ import { RequestCard } from "../../components/request-card";
 import Background from "../../components/request-card/background";
 import { useParams } from "react-router-dom";
 import { IRequest, IResponse } from "../requests/list";
+import { useDocumentTitle } from "@refinedev/react-router-v6";
 
 export const ResponseCreate: React.FC = () => {
   const { id } = useParams();
 
-  const { data, isLoading, isError } = useOne<IRequest, HttpError>({
+  const { data } = useOne<IRequest, HttpError>({
     resource: "requests",
     id,
   });
 
+  useDocumentTitle(`${data?.data?.title} | RSVQuick`);
   const { tableQueryResult: responseTableQueryResult } = useTable<
     IResponse,
     HttpError

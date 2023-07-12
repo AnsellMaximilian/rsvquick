@@ -15,7 +15,7 @@ type handler =
     }) => string)
   | undefined;
 
-const customTitleHandler: handler = ({ resource, action, params }) => {
+const customTitleHandler: handler = ({ resource, action }) => {
   let title = "RSVQuick"; // Default title
 
   if (resource && action) {
