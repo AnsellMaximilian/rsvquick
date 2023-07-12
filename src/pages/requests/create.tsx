@@ -56,6 +56,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
     setValue("font_family", fonts[0]);
     setValue("close_date", dayjs().add(7, "day").format("YYYY-MM-DD"));
     setValue("background_color", "#EEE6B4");
+    setValue("limit", 0);
     setValue("italicize", false);
   }, [setValue]);
 
