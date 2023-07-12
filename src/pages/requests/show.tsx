@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import ValueDisplay from "../../components/common/valueDisplay";
 import { useMemo } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { IResponse } from "./list";
 
 export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   const { mutate } = useDelete();
@@ -110,6 +111,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                 limit={request.limit}
                 fontFamily={request.font_family}
                 italicize={request.italicize}
+                responses={responseDataGridProps.rows as IResponse[]}
               />
             </Background>
           </Box>
