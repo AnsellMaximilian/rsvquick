@@ -44,7 +44,7 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
       ) : (
         <Box
           padding={2}
-          bgcolor="#f2f2f2"
+          bgcolor="action.hover"
           borderRadius={2}
           minHeight={200}
           display="flex"
@@ -52,7 +52,7 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
           justifyContent="center"
         >
           <Stack gap={4} alignItems="center">
-            <Typography>
+            <Typography color="palette.text.primary">
               No RSVP requests. You can start creating one by pushing the
               "Create" button.
             </Typography>
