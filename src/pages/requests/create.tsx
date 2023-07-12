@@ -8,6 +8,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Button,
   FormControlLabel,
   Switch,
 } from "@mui/material";
@@ -18,16 +19,20 @@ import { RequestCard } from "../../components/request-card";
 import fonts from "../../utility/fonts";
 import dayjs from "../../utility/dayjs";
 import Background from "../../components/request-card/background";
+import { useGetIdentity } from "@refinedev/core";
+import { IUser } from "../../components/header";
 
 export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
+  const { data: user } = useGetIdentity<IUser>();
+
   const {
     saveButtonProps,
-    refineCore: { formLoading },
+    refineCore: { formLoading, onFinish },
     register,
-    getValues,
+    handleSubmit,
     setValue,
+    clearErrors,
     watch,
-    control,
     formState: { errors },
   } = useForm();
 
@@ -55,7 +60,27 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
   }, [setValue]);
 
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <Create
+      isLoading={formLoading}
+      footerButtons={({ defaultButtons }) => (
+        <>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              if (user) {
+                clearErrors();
+                handleSubmit(async (values) => {
+                  await onFinish({ ...values, user_id: user.id });
+                })();
+              }
+            }}
+          >
+            Create Request
+          </Button>
+        </>
+      )}
+    >
       <Box marginBottom={4}>
         <Typography component="h2" fontSize={24} fontWeight="bold">
           Preview

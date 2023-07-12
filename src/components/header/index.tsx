@@ -11,7 +11,7 @@ import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
 import React, { useContext } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 
-type IUser = {
+export type IUser = {
   id: number;
   name: string;
   avatar: string;
