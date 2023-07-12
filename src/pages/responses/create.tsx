@@ -1,25 +1,8 @@
-import { Create } from "@refinedev/mui";
-import {
-  Box,
-  Grid,
-  TextField,
-  Typography,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  FormControlLabel,
-  Switch,
-} from "@mui/material";
-import { useForm } from "@refinedev/react-hook-form";
-import { HttpError, IResourceComponentsProps, useOne } from "@refinedev/core";
-import { useEffect, useState } from "react";
+import { HttpError, useOne, useTable } from "@refinedev/core";
 import { RequestCard } from "../../components/request-card";
-import fonts from "../../utility/fonts";
-import dayjs from "../../utility/dayjs";
 import Background from "../../components/request-card/background";
 import { useParams } from "react-router-dom";
-import { IRequest } from "../requests/list";
+import { IRequest, IResponse } from "../requests/list";
 
 export const ResponseCreate: React.FC = () => {
   const { id } = useParams();
@@ -29,7 +12,26 @@ export const ResponseCreate: React.FC = () => {
     id,
   });
 
-  return data && id ? (
+  const { tableQueryResult: responseTableQueryResult } = useTable<
+    IResponse,
+    HttpError
+  >({
+    resource: "responses",
+    queryOptions: {
+      enabled: !!data?.data,
+    },
+    filters: {
+      permanent: [
+        {
+          field: "request_id",
+          operator: "eq",
+          value: data?.data?.id || "",
+        },
+      ],
+    },
+  });
+
+  return data && id && responseTableQueryResult.data ? (
     <Background backgroundColor={data.data.background_color} responseView>
       <RequestCard
         backgroundColor={data.data.background_color}
@@ -44,6 +46,7 @@ export const ResponseCreate: React.FC = () => {
         fontFamily={data.data.font_family}
         italicize={data.data.italicize}
         requestId={id}
+        responses={responseTableQueryResult.data.data}
       />
     </Background>
   ) : (

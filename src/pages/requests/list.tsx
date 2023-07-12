@@ -14,6 +14,7 @@ import RsvpIcon from "@mui/icons-material/Rsvp";
 import { IconButton } from "@mui/material";
 
 export interface IRequest {
+  id: string;
   background_color: string;
   title: string;
   address: string;
@@ -25,6 +26,13 @@ export interface IRequest {
   limit: number;
   font_family: string;
   italicize: boolean;
+}
+
+export interface IResponse {
+  id: string;
+  responder_name: string;
+  accepted_at: string;
+  accept: boolean;
 }
 
 export const RequestList: React.FC<IResourceComponentsProps> = () => {

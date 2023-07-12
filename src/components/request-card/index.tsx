@@ -14,7 +14,7 @@ import {
   HamburgerMenu,
   RefineThemedLayoutV2HeaderProps,
 } from "@refinedev/mui";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 import tc from "tinycolor2";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -22,6 +22,7 @@ import dayjs from "../../utility/dayjs";
 import { Button } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { IRequest, IResponse } from "../../pages/requests/list";
 
 interface RequestCardProps {
   title: string;
@@ -36,11 +37,7 @@ interface RequestCardProps {
   backgroundColor: string;
   italicize: boolean;
   requestId?: string;
-}
-
-interface ResponseInputs {
-  name: string;
-  accept: boolean;
+  responses?: IResponse[];
 }
 
 export const RequestCard: React.FC<RequestCardProps> = ({
@@ -53,9 +50,9 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   closeDate,
   secondaryColor,
   primaryColor,
-  backgroundColor,
   requestId,
   italicize,
+  responses,
 }) => {
   const {
     saveButtonProps,
@@ -123,9 +120,17 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       },
     },
   });
-  // useEffect(() => {
-  //   console.log("IM rerendering", handleSubmit);
-  // }, [handleSubmit]);
+
+  const confirmedAttendees = useMemo(
+    () => responses?.filter((res) => res.accept)?.length || 0,
+    [responses]
+  );
+
+  const closed = useMemo(
+    () => dayjs().isAfter(dayjs(closeDate)) || confirmedAttendees >= limit,
+    [closeDate, confirmedAttendees, limit]
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -142,6 +147,11 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         component={Paper}
         elevation={4}
       >
+        <Box display="flex" justifyContent="flex-end">
+          <Typography color={primaryColor} fontWeight="bold">
+            {confirmedAttendees} / {limit}
+          </Typography>
+        </Box>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <Typography
             fontSize={36}
@@ -161,7 +171,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               textAlign="center"
               color={primaryColor}
             >
-              RSVP
+              RSVP{closed ? " (CLOSED)" : ""}
             </Typography>
             <Typography fontSize={24} textAlign="center" color={primaryColor}>
               Kindly Reply Before {dayjs(closeDate).format("Do MMMM YYYY")}
@@ -196,7 +206,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               >
                 <Box display="flex" justifyContent="space-between" gap={4}>
                   <FormControlLabel
-                    value={true}
+                    value={false}
                     {...register("accept", {
                       required: "This field is required",
                     })}
@@ -204,7 +214,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
                     label={rejectionLabel}
                   />
                   <FormControlLabel
-                    value={false}
+                    value={true}
                     {...register("accept", {
                       required: "This field is required",
                     })}
@@ -219,7 +229,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
             {/* <CreateButton variant="contained" {...saveButtonProps}>
             Submit Response
           </CreateButton> */}
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={closed}>
               Submit Response
             </Button>
           </Box>
