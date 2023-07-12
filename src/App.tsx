@@ -1,6 +1,7 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import RsvpIcon from "@mui/icons-material/Rsvp";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import {
@@ -41,12 +42,13 @@ import { RequestList } from "./pages/requests/list";
 import { RequestCreate } from "./pages/requests/create";
 import { RequestShow } from "./pages/requests/show";
 import { ResponseCreate } from "./pages/responses/create";
+import { AppIcon } from "./components/app-icon";
+import customTitleHandler from "./utility/customTitleHandler";
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>
-        <GitHubBanner />
         <RefineKbarProvider>
           <ColorModeContextProvider>
             <CssBaseline />
@@ -85,6 +87,7 @@ function App() {
                     create: "/requests/create",
                     edit: "/requests/edit/:id",
                     show: "/requests/show/:id",
+                    icon: <RsvpIcon />,
                     meta: {
                       canDelete: true,
                     },
@@ -104,7 +107,12 @@ function App() {
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <ThemedLayoutV2 Header={() => <Header sticky />}>
+                        <ThemedLayoutV2
+                          Header={() => <Header sticky />}
+                          Title={({ collapsed }) => (
+                            <AppIcon collapsed={collapsed} />
+                          )}
+                        >
                           <Outlet />
                         </ThemedLayoutV2>
                       </Authenticated>
@@ -168,7 +176,7 @@ function App() {
 
                 <RefineKbar />
                 <UnsavedChangesNotifier />
-                <DocumentTitleHandler />
+                <DocumentTitleHandler handler={customTitleHandler} />
               </Refine>
             </RefineSnackbarProvider>
           </ColorModeContextProvider>
