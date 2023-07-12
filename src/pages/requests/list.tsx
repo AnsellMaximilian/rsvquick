@@ -50,7 +50,7 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
         field: "created_at",
         flex: 1,
         headerName: "Created At",
-        minWidth: 250,
+        minWidth: 120,
         renderCell: function render({ value }) {
           return <DateField value={value} />;
         },
@@ -71,26 +71,26 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
         field: "acceptance_label",
         flex: 1,
         headerName: "Acceptance Label",
-        minWidth: 200,
+        minWidth: 150,
       },
       {
         field: "rejection_label",
         flex: 1,
         headerName: "Rejection Label",
-        minWidth: 200,
+        minWidth: 150,
       },
       {
         field: "limit",
         flex: 1,
         headerName: "Limit",
         type: "number",
-        minWidth: 200,
+        minWidth: 50,
       },
       {
         field: "close_date",
         flex: 1,
         headerName: "Close Date",
-        minWidth: 250,
+        minWidth: 120,
         renderCell: function render({ value }) {
           return <DateField value={value} />;
         },
