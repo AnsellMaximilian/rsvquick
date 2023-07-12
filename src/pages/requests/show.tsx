@@ -1,8 +1,8 @@
-import { useShow, IResourceComponentsProps } from "@refinedev/core";
+import { useShow, IResourceComponentsProps, useDelete } from "@refinedev/core";
 import { DateField, Show, useDataGrid } from "@refinedev/mui";
 import QRCode from "react-qr-code";
 
-import { Typography, Stack, Grid, Button } from "@mui/material";
+import { Typography, Stack, Grid, Button, Divider } from "@mui/material";
 import Background from "../../components/request-card/background";
 import { RequestCard } from "../../components/request-card";
 import Box from "@mui/material/Box";
@@ -11,6 +11,8 @@ import { useMemo } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 export const RequestShow: React.FC<IResourceComponentsProps> = () => {
+  const { mutate } = useDelete();
+
   const responseColumns = useMemo<GridColDef[]>(
     () => [
       {
@@ -37,7 +39,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
       {
         field: "accept",
         flex: 1,
-        headerName: "accept",
+        headerName: "Accept",
         type: "boolean",
         minWidth: 100,
       },
@@ -48,7 +50,16 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
         renderCell: function render({ row }) {
           return (
             <>
-              <Button variant="contained" color="error">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  mutate({
+                    resource: "responses",
+                    id: row.id,
+                  });
+                }}
+              >
                 Dismiss
               </Button>
             </>
@@ -184,11 +195,19 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
               </Box>
             </Grid>
           </Grid>
-          <DataGrid
-            columns={responseColumns}
-            {...responseDataGridProps}
-            autoHeight
-          />
+          <Divider sx={{ my: 4 }} />
+          <Stack gap={2}>
+            <Typography fontWeight="bold" fontSize={24}>
+              Responses{" "}
+              {responseDataGridProps.rows.filter((row) => row.accept).length}/
+              {request.limit}
+            </Typography>
+            <DataGrid
+              columns={responseColumns}
+              {...responseDataGridProps}
+              autoHeight
+            />
+          </Stack>
         </Box>
       )}
     </Show>
