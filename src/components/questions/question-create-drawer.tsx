@@ -4,9 +4,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { UseModalFormReturnType } from "@refinedev/react-hook-form";
-import { Controller, FieldValues } from "react-hook-form";
-import CloseOutlined from "@mui/icons-material/CloseOutlined";
-import { HttpError } from "@refinedev/core";
+import { BaseKey, HttpError } from "@refinedev/core";
 import { IQuestion, Nullable } from "../../utility/types";
 import { Create } from "@refinedev/mui";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,6 +20,7 @@ export const CreateQuestionDrawer: React.FC<{
     Nullable<IQuestion>
   >;
   request_id: string;
+  showChoiceCreateDrawer: (id?: BaseKey | undefined) => void;
 }> = ({
   request_id,
   drawerProps: {
@@ -63,7 +62,7 @@ export const CreateQuestionDrawer: React.FC<{
         <Box
           component="form"
           autoComplete="off"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
             handleSubmit(
               async (values) => {
@@ -74,6 +73,7 @@ export const CreateQuestionDrawer: React.FC<{
               }
             )();
             setValue("question_text", "");
+            setTimeout(() => close(), 500);
           }}
           sx={{ display: "flex", flexDirection: "column" }}
         >

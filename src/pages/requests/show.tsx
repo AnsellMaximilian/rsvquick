@@ -15,21 +15,26 @@ import Background from "../../components/request-card/background";
 import { RequestCard } from "../../components/request-card";
 import Box from "@mui/material/Box";
 import ValueDisplay from "../../components/common/valueDisplay";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { IRequest, IResponse } from "./list";
 
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import { useModalForm } from "@refinedev/react-hook-form";
-import { IQuestion, Nullable } from "../../utility/types";
+import { IChoice, IQuestion, Nullable } from "../../utility/types";
 import { CreateQuestionDrawer } from "../../components/questions/question-create-drawer";
 import QuestionShow from "../../components/questions/show";
+import { CreateChoiceDrawer } from "../../components/questions/choice-create-drawer";
+import EmptyResourceMessage from "../../components/common/empty-resource-message";
 
 export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   const { mutate } = useDelete();
   const { open } = useNotification();
   const qrCodeRef = useRef(null);
+  const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
+    null
+  );
 
   const copyQRCodeAsImage = async () => {
     try {
@@ -135,6 +140,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
     },
   });
 
+  // request drawer
   const questionCreateDrawerFormProps = useModalForm<
     IQuestion,
     HttpError,
@@ -142,11 +148,26 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   >({
     refineCoreProps: { action: "create", resource: "questions" },
     syncWithLocation: true,
+    warnWhenUnsavedChanges: false,
   });
 
   const {
     modal: { show: showQuestionCreateDrawer },
   } = questionCreateDrawerFormProps;
+
+  // choice drawer
+  const choiceCreateDrawerFormProps = useModalForm<
+    IChoice,
+    HttpError,
+    Nullable<IChoice>
+  >({
+    refineCoreProps: { action: "create", resource: "choices" },
+    syncWithLocation: true,
+  });
+
+  const {
+    modal: { show: showChoiceCreateDrawer },
+  } = choiceCreateDrawerFormProps;
 
   const { tableQueryResult: questionQueryResult } = useTable<
     IQuestion,
@@ -166,6 +187,24 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   });
 
   const questions = questionQueryResult.data?.data;
+
+  const { tableQueryResult: choicesQueryResult } = useTable<IChoice, HttpError>(
+    {
+      resource: "choices",
+      queryOptions: { enabled: !!questions },
+      filters: {
+        permanent: [
+          {
+            field: "question_id",
+            operator: "in",
+            value: questions?.map((q) => q.id),
+          },
+        ],
+      },
+    }
+  );
+
+  const choices = choicesQueryResult.data?.data;
 
   return (
     <Show isLoading={isLoading}>
@@ -294,17 +333,32 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                 Create Questions
               </Button>
             </Stack>
-            {questions && (
+            {questions && questions.length ? (
               <Stack gap={2}>
                 {questions.map((q) => (
-                  <QuestionShow key={q.id} question={q} />
+                  <QuestionShow
+                    key={q.id}
+                    question={q}
+                    showChoiceCreateDrawer={showChoiceCreateDrawer}
+                    setSelectedQuestion={setSelectedQuestion}
+                    choices={choices?.filter(
+                      (choice) => choice.question_id === q.id
+                    )}
+                  />
                 ))}
               </Stack>
+            ) : (
+              <EmptyResourceMessage message="No questions. Create some." />
             )}
           </Stack>
           <CreateQuestionDrawer
+            showChoiceCreateDrawer={showChoiceCreateDrawer}
             drawerProps={questionCreateDrawerFormProps}
             request_id={request.id}
+          />
+          <CreateChoiceDrawer
+            drawerProps={choiceCreateDrawerFormProps}
+            question={selectedQuestion}
           />
           <Divider sx={{ my: 4 }} />
           <Stack gap={2}>

@@ -1,13 +1,24 @@
 import React from "react";
-import { IQuestion } from "../../utility/types";
+import { IChoice, IQuestion } from "../../utility/types";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Dot from "@mui/icons-material/FiberManualRecord";
 import { DeleteButton } from "@refinedev/mui";
+import { BaseKey } from "@refinedev/core";
 
-export default function QuestionShow({ question }: { question: IQuestion }) {
+export default function QuestionShow({
+  question,
+  showChoiceCreateDrawer,
+  setSelectedQuestion,
+  choices,
+}: {
+  question: IQuestion;
+  showChoiceCreateDrawer: (id?: BaseKey | undefined) => void;
+  setSelectedQuestion: React.Dispatch<React.SetStateAction<IQuestion | null>>;
+  choices?: IChoice[];
+}) {
   return (
     <Box bgcolor="action.hover" p={2} borderRadius={2}>
       <Stack
@@ -22,7 +33,15 @@ export default function QuestionShow({ question }: { question: IQuestion }) {
           </Typography>
         </Box>
         <Stack direction="row" gap={2} alignItems="center">
-          <Button size="small">Create Choices</Button>
+          <Button
+            size="small"
+            onClick={() => {
+              setSelectedQuestion(question);
+              showChoiceCreateDrawer();
+            }}
+          >
+            Create Choices
+          </Button>
           <DeleteButton
             hideText
             resource="questions"
@@ -39,14 +58,16 @@ export default function QuestionShow({ question }: { question: IQuestion }) {
           ml={1}
         >
           <Stack gap={1}>
-            <Stack direction="row" gap={2}>
-              <Typography>No I don't think so</Typography>
-              <Typography fontWeight="bold">50%</Typography>
-            </Stack>
-            <Stack direction="row" gap={2}>
-              <Typography>No I don't think so</Typography>
-              <Typography fontWeight="bold">50%</Typography>
-            </Stack>
+            {choices && choices.length > 0 ? (
+              choices.map((c) => (
+                <Stack direction="row" gap={2} key={c.id}>
+                  <Typography>{c.choice_text}</Typography>
+                  <Typography fontWeight="bold">50%</Typography>
+                </Stack>
+              ))
+            ) : (
+              <Typography>Please add some choices.</Typography>
+            )}
           </Stack>
         </Box>
       </Stack>
