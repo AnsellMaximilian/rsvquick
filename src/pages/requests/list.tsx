@@ -1,7 +1,7 @@
 import React from "react";
 import { CreateButton, List } from "@refinedev/mui";
 import { IResourceComponentsProps, useList } from "@refinedev/core";
-import { Box, Typography, Stack } from "@mui/material";
+import { Box, Typography, Stack, CircularProgress } from "@mui/material";
 import RequestListCard from "../../components/request-card/list-card";
 
 export interface IRequest {
@@ -35,12 +35,32 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      {requests && requests.length > 0 ? (
-        <Box display="flex" flexWrap="wrap" gap={2}>
-          {requests.map((req) => (
-            <RequestListCard key={req.id} request={req} />
-          ))}
-        </Box>
+      {requests ? (
+        requests.length > 0 ? (
+          <Box display="flex" flexWrap="wrap" gap={2}>
+            {requests.map((req) => (
+              <RequestListCard key={req.id} request={req} />
+            ))}
+          </Box>
+        ) : (
+          <Box
+            padding={2}
+            bgcolor="action.hover"
+            borderRadius={2}
+            minHeight={200}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Stack gap={4} alignItems="center">
+              <Typography color="palette.text.primary">
+                No RSVP requests. You can start creating one by pushing the
+                "Create" button.
+              </Typography>
+              <CreateButton />
+            </Stack>
+          </Box>
+        )
       ) : (
         <Box
           padding={2}
@@ -51,13 +71,7 @@ export const RequestList: React.FC<IResourceComponentsProps> = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Stack gap={4} alignItems="center">
-            <Typography color="palette.text.primary">
-              No RSVP requests. You can start creating one by pushing the
-              "Create" button.
-            </Typography>
-            <CreateButton />
-          </Stack>
+          <CircularProgress />
         </Box>
       )}
     </List>
