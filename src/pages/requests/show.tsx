@@ -3,6 +3,9 @@ import {
   IResourceComponentsProps,
   useDelete,
   useNotification,
+  useMany,
+  HttpError,
+  useTable,
 } from "@refinedev/core";
 import { DateField, Show, useDataGrid } from "@refinedev/mui";
 import QRCode from "react-qr-code";
@@ -14,10 +17,14 @@ import Box from "@mui/material/Box";
 import ValueDisplay from "../../components/common/valueDisplay";
 import { useMemo } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { IResponse } from "./list";
+import { IRequest, IResponse } from "./list";
 
 import { useRef } from "react";
 import html2canvas from "html2canvas";
+import { useModalForm } from "@refinedev/react-hook-form";
+import { IQuestion, Nullable } from "../../utility/types";
+import { CreateQuestionDrawer } from "../../components/questions/question-create-drawer";
+import QuestionShow from "../../components/questions/show";
 
 export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   const { mutate } = useDelete();
@@ -108,11 +115,11 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
     ],
     [mutate]
   );
-  const { queryResult } = useShow();
+  const { queryResult } = useShow<IRequest>();
   const { data, isLoading } = queryResult;
   const request = data?.data;
 
-  const { dataGridProps: responseDataGridProps } = useDataGrid({
+  const { dataGridProps: responseDataGridProps } = useDataGrid<IResponse>({
     resource: "responses",
     queryOptions: {
       enabled: !!request,
@@ -127,6 +134,38 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
       ],
     },
   });
+
+  const questionCreateDrawerFormProps = useModalForm<
+    IQuestion,
+    HttpError,
+    Nullable<IQuestion>
+  >({
+    refineCoreProps: { action: "create", resource: "questions" },
+    syncWithLocation: true,
+  });
+
+  const {
+    modal: { show: showQuestionCreateDrawer },
+  } = questionCreateDrawerFormProps;
+
+  const { tableQueryResult: questionQueryResult } = useTable<
+    IQuestion,
+    HttpError
+  >({
+    resource: "questions",
+    queryOptions: { enabled: !!request },
+    filters: {
+      permanent: [
+        {
+          field: "request_id",
+          operator: "eq",
+          value: request?.id,
+        },
+      ],
+    },
+  });
+
+  const questions = questionQueryResult.data?.data;
 
   return (
     <Show isLoading={isLoading}>
@@ -240,6 +279,33 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
               </Box>
             </Grid>
           </Grid>
+          <Divider sx={{ my: 4 }} />
+          <Stack gap={2}>
+            <Stack
+              justifyContent="space-between"
+              alignItems="center"
+              direction="row"
+            >
+              <Typography fontSize={24}>Questions</Typography>
+              <Button
+                onClick={() => showQuestionCreateDrawer()}
+                variant="outlined"
+              >
+                Create Questions
+              </Button>
+            </Stack>
+            {questions && (
+              <Stack gap={2}>
+                {questions.map((q) => (
+                  <QuestionShow key={q.id} question={q} />
+                ))}
+              </Stack>
+            )}
+          </Stack>
+          <CreateQuestionDrawer
+            drawerProps={questionCreateDrawerFormProps}
+            request_id={request.id}
+          />
           <Divider sx={{ my: 4 }} />
           <Stack gap={2}>
             <Typography fontWeight="bold" fontSize={24}>
