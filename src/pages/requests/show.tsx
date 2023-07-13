@@ -1,4 +1,9 @@
-import { useShow, IResourceComponentsProps, useDelete } from "@refinedev/core";
+import {
+  useShow,
+  IResourceComponentsProps,
+  useDelete,
+  useNotification,
+} from "@refinedev/core";
 import { DateField, Show, useDataGrid } from "@refinedev/mui";
 import QRCode from "react-qr-code";
 
@@ -11,8 +16,38 @@ import { useMemo } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { IResponse } from "./list";
 
+import { useRef } from "react";
+import html2canvas from "html2canvas";
+
 export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   const { mutate } = useDelete();
+  const { open } = useNotification();
+  const qrCodeRef = useRef(null);
+
+  const copyQRCodeAsImage = async () => {
+    try {
+      if (qrCodeRef.current) {
+        const canvas = await html2canvas(qrCodeRef.current);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            navigator.clipboard.write([
+              new ClipboardItem({
+                "image/png": blob,
+              }),
+            ]);
+          }
+        });
+      }
+      open?.({
+        type: "success",
+        key: "copy-success",
+        message: "Success",
+        description: "QR Code Copied to Clipboard",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const responseColumns = useMemo<GridColDef[]>(
     () => [
@@ -71,7 +106,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
         minWidth: 150,
       },
     ],
-    []
+    [mutate]
   );
   const { queryResult } = useShow();
   const { data, isLoading } = queryResult;
@@ -121,7 +156,18 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                 <Typography fontWeight={600} fontSize={24}>
                   Scan Me!
                 </Typography>
-                {request.id && <QRCode value={request.id as string} />}
+                {request.id && (
+                  <Stack gap={2}>
+                    <Box ref={qrCodeRef} width="min-content">
+                      <QRCode value={request.id as string} />
+                    </Box>
+                    <Stack direction="row" gap={2}>
+                      <Button onClick={copyQRCodeAsImage} variant="outlined">
+                        Copy QR Code as Image
+                      </Button>
+                    </Stack>
+                  </Stack>
+                )}
               </Stack>
             </Grid>
             <Grid item xs={12} lg={6}>
@@ -132,9 +178,6 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                   </Typography>
                 </Box>
                 <Grid container spacing={2}>
-                  {/* <Grid item xs={12}>
-                    <ValueDisplay label="ID" value={request.id} />
-                  </Grid> */}
                   <Grid item xs={12} md={6} lg={12}>
                     <ValueDisplay label="Title" value={request.title} />
                   </Grid>
