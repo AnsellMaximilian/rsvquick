@@ -47,6 +47,8 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
   const fontFamily = watch("font_family");
   const backgroundColor = watch("background_color");
   const italicize = watch("italicize");
+  const secondary_gradient = watch("secondary_gradient");
+  const background_gradient = watch("background_gradient");
 
   useEffect(() => {
     setValue("secondary_color", "#F9F4D7");
@@ -57,12 +59,14 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
     setValue("close_date", dayjs().add(7, "day").format("YYYY-MM-DD"));
     setValue("background_color", "#EEE6B4");
     setValue("italicize", false);
+    setValue("secondary_gradient", false);
+    setValue("background_gradient", false);
   }, [setValue]);
 
   return (
     <Create
       isLoading={formLoading}
-      footerButtons={({ defaultButtons }) => (
+      footerButtons={() => (
         <>
           <Button
             variant="contained"
@@ -85,7 +89,10 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
         <Typography component="h2" fontSize={24} fontWeight="bold">
           Preview
         </Typography>
-        <Background backgroundColor={backgroundColor}>
+        <Background
+          backgroundColor={backgroundColor}
+          background_gradient={background_gradient}
+        >
           <RequestCard
             backgroundColor={backgroundColor}
             title={title}
@@ -98,6 +105,8 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
             limit={limit}
             fontFamily={fontFamily}
             italicize={italicize}
+            secondary_gradient={secondary_gradient}
+            background_gradient={background_gradient}
           />
         </Background>
       </Box>
@@ -209,21 +218,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               Visual
             </Typography>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              {...register("secondary_color", {
-                required: "This field is required",
-              })}
-              error={!!(errors as any)?.secondary_color}
-              helperText={(errors as any)?.secondary_color?.message}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              type="color"
-              label="Secondary Color"
-              name="secondary_color"
-            />
-          </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <TextField
               {...register("primary_color", {
                 required: "This field is required",
@@ -237,7 +232,29 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               name="primary_color"
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
+            <TextField
+              {...register("secondary_color", {
+                required: "This field is required",
+              })}
+              error={!!(errors as any)?.secondary_color}
+              helperText={(errors as any)?.secondary_color?.message}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              type="color"
+              label="Secondary Color"
+              name="secondary_color"
+            />
+          </Grid>
+
+          <Grid item xs={4} display="flex" alignItems="center">
+            <FormControlLabel
+              control={<Switch {...register("secondary_gradient")} />}
+              label="Gradient"
+            />
+          </Grid>
+
+          <Grid item xs={8}>
             <TextField
               {...register("background_color", {
                 required: "This field is required",
@@ -251,6 +268,13 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               name="background_color"
             />
           </Grid>
+          <Grid item xs={4} display="flex" alignItems="center">
+            <FormControlLabel
+              control={<Switch {...register("background_gradient")} />}
+              label="Gradient"
+            />
+          </Grid>
+
           <Grid item xs={8}>
             <FormControl fullWidth>
               <InputLabel id="font_family">Font</InputLabel>
@@ -273,13 +297,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
           </Grid>
           <Grid item xs={4} display="flex" alignItems="center">
             <FormControlLabel
-              control={
-                <Switch
-                  {...register("italicize", {
-                    required: "This field is required",
-                  })}
-                />
-              }
+              control={<Switch {...register("italicize")} />}
               label="Italicize"
             />
           </Grid>

@@ -17,6 +17,8 @@ export interface IRequest {
   limit: number;
   font_family: string;
   italicize: boolean;
+  background_gradient: boolean;
+  secondary_gradient: boolean;
 }
 
 export interface IResponse {

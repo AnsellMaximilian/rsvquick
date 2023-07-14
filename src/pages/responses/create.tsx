@@ -75,7 +75,11 @@ export const ResponseCreate: React.FC = () => {
   const choices = choicesQueryResult.data?.data;
 
   return data && id && responseTableQueryResult.data ? (
-    <Background backgroundColor={data.data.background_color} responseView>
+    <Background
+      backgroundColor={data.data.background_color}
+      responseView
+      background_gradient={data.data.background_gradient}
+    >
       <RequestCard
         backgroundColor={data.data.background_color}
         title={data.data.title}
@@ -90,6 +94,7 @@ export const ResponseCreate: React.FC = () => {
         italicize={data.data.italicize}
         requestId={id}
         responses={responseTableQueryResult.data.data}
+        secondary_gradient={data.data.secondary_gradient}
         surveys={questions?.map((q) => ({
           question: q,
           choices: choices?.filter((c) => c.question_id === q.id) || [],

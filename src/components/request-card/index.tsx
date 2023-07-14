@@ -13,7 +13,12 @@ import { useCreate, useCreateMany, useNotification } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import React, { useMemo, useState, useEffect } from "react";
 import tc from "tinycolor2";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  darken,
+  lighten,
+} from "@mui/material/styles";
 import dayjs from "../../utility/dayjs";
 import { Button } from "@mui/material";
 import { useForm } from "@refinedev/react-hook-form";
@@ -44,6 +49,8 @@ interface RequestCardProps {
   limit: number;
   backgroundColor: string;
   italicize: boolean;
+  secondary_gradient?: boolean;
+  background_gradient?: boolean;
   requestId?: string;
   responses?: IResponse[];
   surveys?: Survey[];
@@ -59,6 +66,8 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   closeDate,
   secondaryColor,
   primaryColor,
+  secondary_gradient = false,
+  background_gradient = false,
   requestId,
   italicize,
   responses,
@@ -198,12 +207,17 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   return (
     <ThemeProvider theme={theme}>
       <Box
-        bgcolor={secondaryColor}
         padding={4}
         sx={{
           borderRadius: 2,
           fontFamily: fontFamily,
           fontStyle: italicize ? "italic" : "normal",
+          background: secondary_gradient
+            ? `radial-gradient(${lighten(
+                secondaryColor,
+                0.3
+              )}, ${secondaryColor}, ${darken(secondaryColor, 0.2)})`
+            : secondaryColor,
         }}
         color={defaultTextColor}
         width={800}

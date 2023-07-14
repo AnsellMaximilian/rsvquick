@@ -245,7 +245,10 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
       {request && (
         <Box>
           <Box>
-            <Background backgroundColor={request.background_color}>
+            <Background
+              backgroundColor={request.background_color}
+              background_gradient={request.background_gradient}
+            >
               <RequestCard
                 backgroundColor={request.background_color}
                 title={request.title}
@@ -254,6 +257,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                 rejectionLabel={request.rejection_label}
                 closeDate={request.close_date}
                 secondaryColor={request.secondary_color}
+                secondary_gradient={request.secondary_gradient}
                 primaryColor={request.primary_color}
                 limit={request.limit}
                 fontFamily={request.font_family}
