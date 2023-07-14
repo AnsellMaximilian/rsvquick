@@ -134,6 +134,7 @@ function App() {
                       element={
                         <AuthPage
                           type="login"
+                          title={<AppIcon />}
                           formProps={{
                             defaultValues: {
                               email: "info@refine.dev",
