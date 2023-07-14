@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { IRequest, IResponse } from "../requests/list";
 import { useDocumentTitle } from "@refinedev/react-router-v6";
 import { IChoice, IQuestion } from "../../utility/types";
+import { CircularProgress } from "@mui/material";
 
 export const ResponseCreate: React.FC = () => {
   const { id } = useParams();
@@ -96,6 +97,8 @@ export const ResponseCreate: React.FC = () => {
       />
     </Background>
   ) : (
-    <h1>Wait</h1>
+    <Background backgroundColor="background.default" responseView>
+      <CircularProgress />
+    </Background>
   );
 };
