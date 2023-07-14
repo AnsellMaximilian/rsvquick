@@ -4,6 +4,7 @@ import Background from "../../components/request-card/background";
 import { useParams } from "react-router-dom";
 import { IRequest, IResponse } from "../requests/list";
 import { useDocumentTitle } from "@refinedev/react-router-v6";
+import { IChoice, IQuestion } from "../../utility/types";
 
 export const ResponseCreate: React.FC = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ export const ResponseCreate: React.FC = () => {
   });
 
   useDocumentTitle(`${data?.data?.title} | RSVQuick`);
+
+  const request = data?.data;
   const { tableQueryResult: responseTableQueryResult } = useTable<
     IResponse,
     HttpError
@@ -33,6 +36,43 @@ export const ResponseCreate: React.FC = () => {
     },
   });
 
+  const { tableQueryResult: questionQueryResult } = useTable<
+    IQuestion,
+    HttpError
+  >({
+    resource: "questions",
+    queryOptions: { enabled: !!request },
+    filters: {
+      permanent: [
+        {
+          field: "request_id",
+          operator: "eq",
+          value: request?.id,
+        },
+      ],
+    },
+  });
+
+  const questions = questionQueryResult.data?.data;
+
+  const { tableQueryResult: choicesQueryResult } = useTable<IChoice, HttpError>(
+    {
+      resource: "choices",
+      queryOptions: { enabled: !!questions },
+      filters: {
+        permanent: [
+          {
+            field: "question_id",
+            operator: "in",
+            value: questions?.map((q) => q.id),
+          },
+        ],
+      },
+    }
+  );
+
+  const choices = choicesQueryResult.data?.data;
+
   return data && id && responseTableQueryResult.data ? (
     <Background backgroundColor={data.data.background_color} responseView>
       <RequestCard
@@ -49,6 +89,10 @@ export const ResponseCreate: React.FC = () => {
         italicize={data.data.italicize}
         requestId={id}
         responses={responseTableQueryResult.data.data}
+        surveys={questions?.map((q) => ({
+          question: q,
+          choices: choices?.filter((c) => c.question_id === q.id) || [],
+        }))}
       />
     </Background>
   ) : (

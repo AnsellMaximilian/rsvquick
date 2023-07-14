@@ -22,7 +22,7 @@ import { IRequest, IResponse } from "./list";
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import { useModalForm } from "@refinedev/react-hook-form";
-import { IChoice, IQuestion, Nullable } from "../../utility/types";
+import { IAnswer, IChoice, IQuestion, Nullable } from "../../utility/types";
 import { CreateQuestionDrawer } from "../../components/questions/question-create-drawer";
 import QuestionShow from "../../components/questions/show";
 import { CreateChoiceDrawer } from "../../components/questions/choice-create-drawer";
@@ -206,6 +206,40 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
 
   const choices = choicesQueryResult.data?.data;
 
+  const { tableQueryResult: answerQueryReseult } = useTable<IAnswer, HttpError>(
+    {
+      resource: "answers",
+      queryOptions: { enabled: !!questions },
+      filters: {
+        permanent: [
+          {
+            field: "question_id",
+            operator: "in",
+            value: questions?.map((q) => q.id),
+          },
+        ],
+      },
+    }
+  );
+
+  const answers = answerQueryReseult.data?.data;
+
+  const confirmedAttendeeResponses: IResponse[] = useMemo(
+    () => responseDataGridProps.rows.filter((res) => res.accept),
+    [responseDataGridProps]
+  );
+  const confirmedAttendeeAnswers = useMemo(
+    () =>
+      answers?.filter((answer) =>
+        confirmedAttendeeResponses
+          .map((res) => res.id)
+          .includes(answer.response_id)
+      ),
+    [answers, confirmedAttendeeResponses]
+  );
+
+  console.log({ confirmedAttendeeAnswers, confirmedAttendeeResponses });
+
   return (
     <Show isLoading={isLoading}>
       {request && (
@@ -341,6 +375,10 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                     question={q}
                     showChoiceCreateDrawer={showChoiceCreateDrawer}
                     setSelectedQuestion={setSelectedQuestion}
+                    answers={confirmedAttendeeAnswers?.filter(
+                      (answer) => answer.question_id === q.id
+                    )}
+                    responses={confirmedAttendeeResponses}
                     choices={choices?.filter(
                       (choice) => choice.question_id === q.id
                     )}

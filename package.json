@@ -22,6 +22,7 @@
     "@refinedev/supabase": "^5.0.0",
     "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/tinycolor2": "^1.4.3",
+    "@types/uuid": "^9.0.2",
     "dayjs": "^1.11.9",
     "html2canvas": "^1.4.1",
     "react": "^18.0.0",
@@ -30,7 +31,8 @@
     "react-hook-form": "^7.30.0",
     "react-qr-code": "^2.0.11",
     "react-router-dom": "^6.8.1",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "^1.6.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.2",

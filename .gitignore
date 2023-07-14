@@ -24,3 +24,5 @@ yarn-error.log*
 
 # vars
 .env
+# Local Netlify folder
+.netlify
