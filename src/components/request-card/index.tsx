@@ -107,6 +107,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       const surveyAnswers = getSurveyValues()?.answers as IAnswer[];
       if (
         surveys &&
+        surveyAnswers &&
         surveyAnswers?.filter((answer) => answer.choice_id).length !==
           surveys.length &&
         accept
@@ -305,7 +306,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               </RadioGroup>
             </FormControl>
           </Box>
-          {surveys && accept && (
+          {surveys && accept && surveys.length > 0 && (
             <>
               <Divider sx={{ my: 4, color: "red" }} />
 

@@ -74,8 +74,6 @@ export const ResponseCreate: React.FC = () => {
 
   const choices = choicesQueryResult.data?.data;
 
-  console.log(data);
-
   return data && id && responseTableQueryResult.data ? (
     <Background
       backgroundColor={data.data.background_color}
