@@ -3,6 +3,8 @@ import { CreateButton, List } from "@refinedev/mui";
 import { IResourceComponentsProps, useList } from "@refinedev/core";
 import { Box, Typography, Stack, CircularProgress } from "@mui/material";
 import RequestListCard from "../../components/request-card/list-card";
+import { IUser } from "../../components/header";
+import { useGetIdentity } from "@refinedev/core";
 
 export interface IRequest {
   id: string;
@@ -29,8 +31,20 @@ export interface IResponse {
 }
 
 export const RequestList: React.FC<IResourceComponentsProps> = () => {
+  const { data: user } = useGetIdentity<IUser>();
+
   const { data } = useList<IRequest>({
     resource: "requests",
+    queryOptions: {
+      enabled: !!user,
+    },
+    filters: [
+      {
+        field: "user_id",
+        operator: "eq",
+        value: user?.id,
+      },
+    ],
   });
 
   const requests = data?.data;
