@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
-import { useCreate, useCreateMany } from "@refinedev/core";
+import { useCreate, useCreateMany, useNotification } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import React, { useMemo, useState, useEffect } from "react";
 import tc from "tinycolor2";
@@ -68,7 +68,6 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     saveButtonProps,
     refineCore: { formLoading, onFinish },
     register,
-    getValues,
     setValue,
     watch,
     handleSubmit,
@@ -79,7 +78,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   const {
     register: surveyRegister,
     handleSubmit: handleSurveySubmit,
-    setValue: setSurveyValue,
+    getValues: getSurveyValues,
     formState: { errors: surveyErrors },
   } = useForm<SurveyAnswer[]>();
 
@@ -87,12 +86,33 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   const { mutate: createAnswers } = useCreateMany<IAnswer>();
 
   const navigate = useNavigate();
+  const { open } = useNotification();
 
   const defaultTextColor = tc(secondaryColor).isLight() ? "black" : "white";
 
+  const responseAnswer = watch("accept");
+  const accept = responseAnswer === "true";
+
   const onSubmit = async (data: FieldValues) => {
     if (requestId) {
+      const surveyAnswers = getSurveyValues()?.answers as IAnswer[];
+      if (
+        surveys &&
+        surveyAnswers?.filter((answer) => answer.choice_id).length !==
+          surveys.length &&
+        accept
+      ) {
+        open?.({
+          type: "error",
+          key: "unanswered",
+          description: "Please complete the survey.",
+          message: "Answer the survey to complete your response.",
+        });
+        return;
+      }
+
       const responseId = uuidv4();
+
       mutate(
         {
           resource: "responses",
@@ -104,21 +124,23 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         },
         {
           onSuccess: (data, variables) => {
-            handleSurveySubmit(
-              async (values) => {
-                const surveyAnswers = values.answers as SurveyAnswer[];
-                createAnswers({
-                  resource: "answers",
-                  errorNotification: false,
-                  successNotification: false,
-                  values: surveyAnswers.map((answer) => ({
-                    ...answer,
-                    response_id: responseId,
-                  })),
-                });
-              },
-              (error) => console.log(error, "ERROR")
-            )();
+            if (accept) {
+              handleSurveySubmit(
+                async (values) => {
+                  const surveyAnswers = values.answers as SurveyAnswer[];
+                  createAnswers({
+                    resource: "answers",
+                    errorNotification: false,
+                    successNotification: false,
+                    values: surveyAnswers.map((answer) => ({
+                      ...answer,
+                      response_id: responseId,
+                    })),
+                  });
+                },
+                (error) => console.log(error, "ERROR")
+              )();
+            }
             navigate("/");
           },
         }
@@ -269,7 +291,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               </RadioGroup>
             </FormControl>
           </Box>
-          {surveys && (
+          {surveys && accept && (
             <>
               <Divider sx={{ my: 4, color: "red" }} />
 
