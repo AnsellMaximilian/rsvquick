@@ -45,6 +45,7 @@ import { ResponseCreate } from "./pages/responses/create";
 import { AppIcon } from "./components/app-icon";
 import customTitleHandler from "./utility/customTitleHandler";
 import ThankYouPage from "./pages/responses/thank-you";
+import LandingPage from "./pages/landing";
 
 function App() {
   return (
@@ -80,7 +81,7 @@ function App() {
                 }}
               >
                 <Routes>
-                  <Route index element={<ThankYouPage />} />
+                  <Route index element={<LandingPage />} />
 
                   <Route path="/r">
                     <Route path=":id" element={<ResponseCreate />} />

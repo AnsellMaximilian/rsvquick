@@ -18,41 +18,49 @@ interface Props {
 export default function RequestListCard({ request }: Props) {
   return (
     <Card elevation={3} sx={{ flex: 1, minWidth: 250 }}>
-      <Box padding={2} bgcolor={request.secondary_color}>
-        <MuiLink
-          component={Link}
-          to={`/requests/show/${request.id}`}
-          underline="hover"
-          sx={{ textDecorationColor: `${request.primary_color} !important` }}
+      <Stack justifyContent="space-between" height="100%">
+        <Box padding={2} bgcolor={request.secondary_color}>
+          <MuiLink
+            component={Link}
+            to={`/requests/show/${request.id}`}
+            underline="hover"
+            sx={{ textDecorationColor: `${request.primary_color} !important` }}
+          >
+            <Typography color={request.primary_color} fontWeight="bold">
+              {request.title}
+            </Typography>
+          </MuiLink>
+        </Box>
+        <Box
+          padding={2}
+          display="flex"
+          flexDirection="column"
+          height="100%"
+          justifyContent="flex-end"
         >
-          <Typography color={request.primary_color} fontWeight="bold">
-            {request.title}
-          </Typography>
-        </MuiLink>
-      </Box>
-      <Box padding={2}>
-        <Stack>
-          <Typography fontWeight="bold" fontSize={12}>
-            Close Date
-          </Typography>
-          <Typography>{request.close_date}</Typography>
-        </Stack>
-        <Stack mt={2}>
-          <Typography fontWeight="bold">Actions</Typography>
-          <Stack gap={2} direction="row" alignItems="center">
-            <EditButton hideText recordItemId={request.id} />
-            <ShowButton hideText recordItemId={request.id} />
-            <DeleteButton hideText recordItemId={request.id} />
-            <IconButton
-              component={Link}
-              to={`/r/${request.id}`}
-              color="primary"
-            >
-              <RsvpIcon />
-            </IconButton>
+          <Stack>
+            <Typography fontWeight="bold" fontSize={12}>
+              Close Date
+            </Typography>
+            <Typography>{request.close_date}</Typography>
           </Stack>
-        </Stack>
-      </Box>
+          <Stack mt={2}>
+            <Typography fontWeight="bold">Actions</Typography>
+            <Stack gap={2} direction="row" alignItems="center">
+              <EditButton hideText recordItemId={request.id} />
+              <ShowButton hideText recordItemId={request.id} />
+              <DeleteButton hideText recordItemId={request.id} />
+              <IconButton
+                component={Link}
+                to={`/r/${request.id}`}
+                color="primary"
+              >
+                <RsvpIcon />
+              </IconButton>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
     </Card>
   );
 }

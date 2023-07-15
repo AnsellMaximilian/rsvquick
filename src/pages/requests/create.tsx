@@ -62,7 +62,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
     setValue("italicize", false);
     setValue("secondary_gradient", false);
     setValue("background_gradient", false);
-    setValue("styke", "DEFAULT");
+    setValue("style", "DEFAULT");
   }, [setValue]);
 
   return (
