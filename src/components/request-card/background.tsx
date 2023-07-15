@@ -30,7 +30,7 @@ export default function Background({
               .toString()})`
           : backgroundColor,
       }}
-      padding={8}
+      padding={{ xs: 1, md: 8 }}
       minHeight={responseView ? "100vh" : "100%"}
     >
       {children}
