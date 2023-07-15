@@ -214,8 +214,9 @@ export const RequestCard: React.FC<RequestCardProps> = ({
           fontFamily: fontFamily,
           fontStyle: italicize ? "italic" : "normal",
           background: secondary_gradient
-            ? `radial-gradient(${tc(secondaryColor)
+            ? `linear-gradient(${tc(secondaryColor)
                 .analogous()
+                .slice(1)
                 .reverse()
                 .toString()})`
             : secondaryColor,
