@@ -153,7 +153,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
                 (error) => console.log(error, "ERROR")
               )();
             }
-            navigate("/");
+            navigate("/thank-you");
           },
         }
       );

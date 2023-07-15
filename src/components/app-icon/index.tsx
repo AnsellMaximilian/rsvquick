@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-export const AppIcon: React.FC<{ collapsed?: boolean }> = ({
+export const AppIcon: React.FC<{ collapsed?: boolean; size?: number }> = ({
   collapsed = false,
+  size = 120,
 }) => {
   return (
     <Box
@@ -15,7 +16,7 @@ export const AppIcon: React.FC<{ collapsed?: boolean }> = ({
     >
       <img
         src={collapsed ? "/rsvquick-icon.svg" : "/rsvquick-logo.svg"}
-        width={collapsed ? 25 : 120}
+        width={collapsed ? 25 : size}
       />
     </Box>
   );

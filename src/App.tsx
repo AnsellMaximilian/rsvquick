@@ -44,6 +44,7 @@ import { RequestShow } from "./pages/requests/show";
 import { ResponseCreate } from "./pages/responses/create";
 import { AppIcon } from "./components/app-icon";
 import customTitleHandler from "./utility/customTitleHandler";
+import ThankYouPage from "./pages/responses/thank-you";
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
                   <Route path="/r">
                     <Route path=":id" element={<ResponseCreate />} />
                   </Route>
+                  <Route path="/thank-you" element={<ThankYouPage />} />
                   <Route
                     element={
                       <Authenticated
