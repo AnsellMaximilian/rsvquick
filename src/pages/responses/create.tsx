@@ -95,6 +95,7 @@ export const ResponseCreate: React.FC = () => {
         requestId={id}
         responses={responseTableQueryResult.data.data}
         secondary_gradient={data.data.secondary_gradient}
+        style={data.data.style}
         surveys={questions?.map((q) => ({
           question: q,
           choices: choices?.filter((c) => c.question_id === q.id) || [],
