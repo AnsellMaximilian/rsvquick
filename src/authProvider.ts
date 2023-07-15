@@ -21,7 +21,7 @@ const authProvider: AuthBindings = {
         if (data?.url) {
           return {
             success: true,
-            redirectTo: "/",
+            redirectTo: "/requests",
           };
         }
       }
@@ -42,7 +42,7 @@ const authProvider: AuthBindings = {
       if (data?.user) {
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: "/requests",
         };
       }
     } catch (error: any) {
@@ -77,7 +77,7 @@ const authProvider: AuthBindings = {
       if (data) {
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: "/login",
         };
       }
     } catch (error: any) {
@@ -147,7 +147,7 @@ const authProvider: AuthBindings = {
       if (data) {
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: "/login",
         };
       }
     } catch (error: any) {

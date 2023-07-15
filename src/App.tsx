@@ -80,6 +80,8 @@ function App() {
                 }}
               >
                 <Routes>
+                  <Route index element={<ThankYouPage />} />
+
                   <Route path="/r">
                     <Route path=":id" element={<ResponseCreate />} />
                   </Route>
@@ -100,10 +102,10 @@ function App() {
                       </Authenticated>
                     }
                   >
-                    <Route
+                    {/* <Route
                       index
                       element={<NavigateToResource resource="requests" />}
-                    />
+                    /> */}
                     <Route path="/blog-posts">
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
