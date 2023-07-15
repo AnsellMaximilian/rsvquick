@@ -214,10 +214,10 @@ export const RequestCard: React.FC<RequestCardProps> = ({
           fontFamily: fontFamily,
           fontStyle: italicize ? "italic" : "normal",
           background: secondary_gradient
-            ? `radial-gradient(${lighten(
-                secondaryColor,
-                0.3
-              )}, ${secondaryColor}, ${darken(secondaryColor, 0.2)})`
+            ? `radial-gradient(${tc(secondaryColor)
+                .analogous()
+                .reverse()
+                .toString()})`
             : secondaryColor,
         }}
         color={defaultTextColor}

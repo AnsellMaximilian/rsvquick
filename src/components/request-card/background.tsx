@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { darken, lighten } from "@mui/material/styles";
+import tc from "tinycolor2";
 
 export default function Background({
   children,
@@ -24,7 +25,9 @@ export default function Background({
           ? `radial-gradient(${lighten(
               backgroundColor,
               0.3
-            )}, ${backgroundColor}, ${darken(backgroundColor, 0.2)})`
+            )}, ${backgroundColor}, ${tc(backgroundColor)
+              .analogous()
+              .toString()})`
           : backgroundColor,
       }}
       padding={8}
