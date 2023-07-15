@@ -6,7 +6,10 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@fontsource-variable/merienda": "^5.0.5",
+    "@fontsource/kaushan-script": "^5.0.5",
     "@fontsource/roboto": "^5.0.5",
+    "@fontsource/rochester": "^5.0.5",
     "@mui/icons-material": "^5.8.3",
     "@mui/lab": "^5.0.0-alpha.85",
     "@mui/material": "^5.8.6",

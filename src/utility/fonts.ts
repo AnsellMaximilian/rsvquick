@@ -1,4 +1,7 @@
 const webSafeFonts = [
+  "Kaushan Script",
+  "Merienda Variable",
+  "Rochester",
   "Arial",
   "Arial Black",
   "Comic Sans MS",
