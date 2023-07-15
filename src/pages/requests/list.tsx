@@ -21,6 +21,7 @@ export interface IRequest {
   italicize: boolean;
   background_gradient: boolean;
   secondary_gradient: boolean;
+  style: string;
 }
 
 export interface IResponse {

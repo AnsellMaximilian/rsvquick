@@ -49,6 +49,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
   const italicize = watch("italicize");
   const secondary_gradient = watch("secondary_gradient");
   const background_gradient = watch("background_gradient");
+  const style = watch("style");
 
   useEffect(() => {
     setValue("secondary_color", "#F9F4D7");
@@ -61,6 +62,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
     setValue("italicize", false);
     setValue("secondary_gradient", false);
     setValue("background_gradient", false);
+    setValue("styke", "DEFAULT");
   }, [setValue]);
 
   return (
@@ -86,9 +88,11 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
       )}
     >
       <Box marginBottom={4}>
-        <Typography component="h2" fontSize={24} fontWeight="bold">
-          Preview
-        </Typography>
+        <Box mb={2}>
+          <Typography component="h2" fontSize={24}>
+            Preview
+          </Typography>
+        </Box>
         <Background
           backgroundColor={backgroundColor}
           background_gradient={background_gradient}
@@ -107,6 +111,7 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
             italicize={italicize}
             secondary_gradient={secondary_gradient}
             background_gradient={background_gradient}
+            style={style}
           />
         </Background>
       </Box>
@@ -300,6 +305,23 @@ export const RequestCreate: React.FC<IResourceComponentsProps> = () => {
               control={<Switch {...register("italicize")} />}
               label="Italicize"
             />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="style">Style</InputLabel>
+              <Select
+                labelId="style"
+                label="Style"
+                error={!!(errors as any)?.style}
+                {...register("style", {
+                  required: "This field is required",
+                })}
+                defaultValue="DEFAULT"
+              >
+                <MenuItem value="DEFAULT">DEFAULT</MenuItem>
+                <MenuItem value="FANCY">FANCY</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
       </Grid>

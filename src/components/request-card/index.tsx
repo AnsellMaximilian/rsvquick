@@ -54,6 +54,7 @@ interface RequestCardProps {
   requestId?: string;
   responses?: IResponse[];
   surveys?: Survey[];
+  style?: string;
 }
 
 export const RequestCard: React.FC<RequestCardProps> = ({
@@ -72,6 +73,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   italicize,
   responses,
   surveys,
+  style = "DEFAULT",
 }) => {
   const {
     saveButtonProps,
@@ -205,21 +207,30 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     [closeDate, confirmedAttendees, limit]
   );
 
+  const secondaryGradientColor = useMemo(
+    () =>
+      `linear-gradient(${tc(secondaryColor)
+        .analogous()
+        .slice(1)
+        .reverse()
+        .toString()})`,
+    [secondaryColor]
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Box
-        padding={4}
         sx={{
           borderRadius: 2,
+          overflow: "hidden",
           fontFamily: fontFamily,
           fontStyle: italicize ? "italic" : "normal",
-          background: secondary_gradient
-            ? `linear-gradient(${tc(secondaryColor)
-                .analogous()
-                .slice(1)
-                .reverse()
-                .toString()})`
-            : secondaryColor,
+          background:
+            style === "DEFAULT"
+              ? secondary_gradient
+                ? secondaryGradientColor
+                : secondaryColor
+              : "",
         }}
         color={defaultTextColor}
         width={800}
@@ -227,15 +238,24 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         component={Paper}
         elevation={4}
       >
-        <Box display="flex" justifyContent="flex-end">
-          <Typography color={primaryColor} fontWeight="bold">
-            {confirmedAttendees} / {limit ? limit : 0}
-          </Typography>
-        </Box>
         <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit, (error) => console.log(error))}
+          px={4}
+          pt={4}
+          pb={style === "DEFAULT" ? 0 : 8}
+          sx={{
+            background:
+              style === "DEFAULT"
+                ? ""
+                : secondary_gradient
+                ? secondaryGradientColor
+                : secondaryColor,
+          }}
         >
+          <Box display="flex" justifyContent="flex-end">
+            <Typography color={primaryColor} fontWeight="bold">
+              {confirmedAttendees} / {limit ? limit : 0}
+            </Typography>
+          </Box>
           <Typography
             fontSize={36}
             textAlign="center"
@@ -260,6 +280,13 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               Kindly Reply Before {dayjs(closeDate).format("Do MMMM YYYY")}
             </Typography>
           </Box>
+        </Box>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit, (error) => console.log(error))}
+          px={4}
+          pb={4}
+        >
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box my={2}>
               <TextField
@@ -272,7 +299,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
                 type="text"
                 label="Your Name"
                 name="responder_name"
-                variant="filled"
+                variant="standard"
               />
             </Box>
             <FormControl error={!!(errors as any)?.accept}>
