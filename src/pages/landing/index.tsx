@@ -10,6 +10,8 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import { useGetIdentity } from "@refinedev/core";
+import { IUser } from "../../components/header";
 
 const Feature = ({
   title,
@@ -41,6 +43,8 @@ const Feature = ({
 };
 
 export default function LandingPage() {
+  const { data: user } = useGetIdentity<IUser>();
+
   return (
     <Stack>
       <Box
@@ -51,17 +55,35 @@ export default function LandingPage() {
       >
         <AppIcon />
         <Stack direction="row" gap={2}>
-          <Button variant="outlined" component={Link} to="/login" size="small">
-            Login
-          </Button>
-          <Button
-            variant="contained"
-            component={Link}
-            to="/register"
-            size="small"
-          >
-            Create Account
-          </Button>
+          {user ? (
+            <Button
+              variant="contained"
+              component={Link}
+              to="/requests"
+              size="small"
+            >
+              Dashboard
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/login"
+                size="small"
+              >
+                Login
+              </Button>
+              <Button
+                variant="contained"
+                component={Link}
+                to="/register"
+                size="small"
+              >
+                Create Account
+              </Button>
+            </>
+          )}
         </Stack>
       </Box>
       <Box>
@@ -92,9 +114,15 @@ export default function LandingPage() {
               manually counting cards. Easily determine number of attendees.
             </Typography>
             <Box display="flex" justifyContent="center" mt={4}>
-              <Button variant="contained" component={Link} to="/requests">
-                Start Creating
-              </Button>
+              {user ? (
+                <Button variant="contained" component={Link} to="/requests">
+                  Dashboard
+                </Button>
+              ) : (
+                <Button variant="contained" component={Link} to="/requests">
+                  Start Creating
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
