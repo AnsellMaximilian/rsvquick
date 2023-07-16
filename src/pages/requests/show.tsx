@@ -275,7 +275,11 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                 {request.id && (
                   <Stack gap={2}>
                     <Box ref={qrCodeRef} width="min-content">
-                      <QRCode value={request.id as string} />
+                      <QRCode
+                        value={`https://rsvquick.netlify.app/r/${
+                          request.id as string
+                        }`}
+                      />
                     </Box>
                     <Stack direction="row" gap={2}>
                       <Button onClick={copyQRCodeAsImage} variant="outlined">
