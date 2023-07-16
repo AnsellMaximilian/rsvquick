@@ -1,6 +1,7 @@
 # RSVQUICK - REFINE
 
 ## Cover Image
+![rsvquick cover image](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/2cb81317-638c-489c-894c-3bc45b69bfba)
 
 ## Project Demo Link
 
@@ -20,6 +21,23 @@ With RSVQuick, you can also ask any arbitrary questions with arbitrary options (
 - [Ansell Maximilian](https://github.com/AnsellMaximilian)
 
 ### Preview
+- Landing Page
+![Landing Page](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/e7de21b2-0869-40bd-95cf-bacf7bc7c21a)
+
+- List Page
+![List Page](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/d9630ac7-660c-4a7b-a9b2-e1915427fc07)
+
+- Create Page
+![Create Page](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/53f4ae1a-e32d-4b9b-ba02-cd9fbb7fdfc8)
+
+- Show Page
+![Show Page](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/02f4be46-d9cd-4537-9b8f-6c065d06b96f)
+
+- Questions Section
+![Questions Section](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/f9acb58a-7bd9-446a-92dd-09531744f8ca)
+
+- Guest RSVP Card View
+![Guest Card View](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/5611fe48-d40c-410e-b3d2-9977b2dbe188)
 
 ## Set Up Project
 
