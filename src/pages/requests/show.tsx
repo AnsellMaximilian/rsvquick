@@ -61,6 +61,21 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
     }
   };
 
+  const copyLinkToClipboard = () => {
+    if (request) {
+      navigator.clipboard.writeText(
+        `https://rsvquick.netlify.app/r/${request?.id}`
+      );
+      open?.({
+        type: "success",
+        key: "copy-link-success",
+        description: "Link copied to clipboard",
+        message:
+          "Your RSVP link has been copied to your clipboard. Share it with your guests.",
+      });
+    }
+  };
+
   const responseColumns = useMemo<GridColDef[]>(
     () => [
       {
@@ -241,7 +256,18 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
   console.log({ confirmedAttendeeAnswers, confirmedAttendeeResponses });
 
   return (
-    <Show isLoading={isLoading}>
+    <Show
+      isLoading={isLoading}
+      canEdit={false}
+      headerButtons={({ defaultButtons }) => (
+        <>
+          <Button onClick={copyLinkToClipboard} variant="contained">
+            Share RSVP Link
+          </Button>
+          {defaultButtons}
+        </>
+      )}
+    >
       {request && (
         <Box>
           <Box>
@@ -281,7 +307,7 @@ export const RequestShow: React.FC<IResourceComponentsProps> = () => {
                         }`}
                       />
                     </Box>
-                    <Stack direction="row" gap={2}>
+                    <Stack direction="row" gap={2} alignItems="center">
                       <Button onClick={copyQRCodeAsImage} variant="outlined">
                         Copy QR Code as Image
                       </Button>
