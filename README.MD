@@ -47,6 +47,7 @@ In order to set up your own project, you will need to do the following:
 
 - Create a new Supabase project
 - Create the following tables:
+![Supbase Schema](https://github.com/AnsellMaximilian/rsvquick/assets/56351143/4af94ffe-0ff3-42d1-948a-e66f7242a1e8)
 
 ### Install Project
 
