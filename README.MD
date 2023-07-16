@@ -1,48 +1,58 @@
 # RSVQUICK - REFINE
 
-<div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img src="https://refine.ams3.cdn.digitaloceanspaces.com/refine_logo.png"  align="center" />
-    </a>
-</div>
-<br/>
+## Cover Image
 
-This [refine](https://github.com/refinedev/refine) project was generated with [superplate](https://github.com/pankod/superplate).
+## Project Demo Link
 
-## Getting Started
+[Live app](https://rsvquick.netlify.app/).
 
-**refine** is a React-based framework for building data-intensive applications in no time ✨
+## About
 
-Refine offers lots of out-of-the box functionality for rapid development, without compromising extreme customizability. Use-cases include, but are not limited to admin panels, B2B applications and dashboards.
+### Description
 
-## Available Scripts
+A web application for quickly creating and sending customizable online RSVP invitations with attachable surveys/questions to ask potential attendees.
+This application provides simple customizable options so that your RSVP cards can be created quickly while also still be infinitely unique. After creation, cards can be sent out by either sending your potential guests the link to the invitation cards or by using the automatically provided barcode which you can copy as images.
 
-### Running the development server.
+With RSVQuick, you can also ask any arbitrary questions with arbitrary options (answers) to gauge extra information about your attendees. For example, in a wedding, you may want to ask how many of your guests will be vegetarian and prepare the wedding meal menu accordingly. You can attach that exact survey in your RSVP card and assess the results after your guests have responded and determine how much vegetarian food you should order.
 
-```bash
-    npm run dev
+### Participants
+
+- [Ansell Maximilian](https://github.com/AnsellMaximilian)
+
+### Preview
+
+## Set Up Project
+
+### Prerequisites
+
+In order to set up your own project, you will need to do the following:
+
+- Create a new Supabase project
+- Create the following tables:
+
+### Install Project
+
+After you've fulfilled all the prerequisites, install the project:
+
+- Clone the repository:
+
+```
+git clone https://github.com/AnsellMaximilian/rsvquick.git rsvquick
 ```
 
-### Building for production.
+- Change into directory and install dependencies:
 
-```bash
-    npm run build
+```
+cd rsvquick
+npm install
 ```
 
-### Running the production server.
+- Create a `.env` file and add your Supabase project variables:
 
-```bash
-    npm run start
 ```
-
-## Learn More
-
-To learn more about **refine**, please check out the [Documentation](https://refine.dev/docs)
-
-- **Supabase Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
-- **Material UI** [Docs](https://refine.dev/docs/ui-frameworks/mui/tutorial/)
-- **Inferencer** [Docs](https://refine.dev/docs/packages/documentation/inferencer)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
+VITE_SUPABASE_KEY=<public key>
+VITE_SUPABASE_PROJECT_URL=<project URL>
+```
 
 ## License
 
