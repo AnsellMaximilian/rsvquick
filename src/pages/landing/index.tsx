@@ -65,8 +65,8 @@ export default function LandingPage() {
         </Stack>
       </Box>
       <Box>
-        <Box pb={{ xs: 5, sm: 20, md: 25 }}>
-          <Box px={4} py={10}>
+        <Box pb={{ xs: 5, sm: 20, md: 25, lg: 30 }}>
+          <Box px={4} py={10} maxWidth={1280} mx="auto">
             <Typography
               component="h1"
               variant="h2"
@@ -94,10 +94,10 @@ export default function LandingPage() {
           </Box>
         </Box>
         <Box bgcolor="primary.main">
-          <Box px={{ xs: 2, md: 10 }}>
+          <Box px={{ xs: 2, md: 10 }} maxWidth={1280} mx="auto">
             <img src="/hero.png" style={{ width: "100%", marginTop: "-20%" }} />
           </Box>
-          <Box pb={40} pt={10} color="white" px={4}>
+          <Box pb={20} pt={10} color="white" px={4} maxWidth={1280} mx="auto">
             <Box display="flex" gap={4} justifyContent="center" flexWrap="wrap">
               <Feature
                 title="Customizable RSVP Cards"
