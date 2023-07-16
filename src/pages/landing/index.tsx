@@ -91,6 +91,11 @@ export default function LandingPage() {
               Create customizable RSVP quickly and send them online. No more
               manually counting cards. Easily determine number of attendees.
             </Typography>
+            <Box display="flex" justifyContent="center" mt={4}>
+              <Button variant="contained" component={Link} to="/requests">
+                Start Creating
+              </Button>
+            </Box>
           </Box>
         </Box>
         <Box bgcolor="primary.main">
