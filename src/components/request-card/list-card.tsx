@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from "@mui/material/Tooltip";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
@@ -47,16 +48,18 @@ export default function RequestListCard({ request }: Props) {
           <Stack mt={2}>
             <Typography fontWeight="bold">Actions</Typography>
             <Stack gap={2} direction="row" alignItems="center">
-              <EditButton hideText recordItemId={request.id} />
+              {/* <EditButton hideText recordItemId={request.id} /> */}
               <ShowButton hideText recordItemId={request.id} />
               <DeleteButton hideText recordItemId={request.id} />
-              <IconButton
-                component={Link}
-                to={`/r/${request.id}`}
-                color="primary"
-              >
-                <RsvpIcon />
-              </IconButton>
+              <Tooltip title="See how your guests will see your invite.">
+                <IconButton
+                  component={Link}
+                  to={`/r/${request.id}`}
+                  color="primary"
+                >
+                  <RsvpIcon />
+                </IconButton>
+              </Tooltip>
             </Stack>
           </Stack>
         </Box>
